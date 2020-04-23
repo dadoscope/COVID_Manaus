@@ -30,9 +30,14 @@ png("mortes_em_manaus.png",width=3200,height=1800,res=300)
 print(p1)
 dev.off()
 
+
+
 max_deaths <- casos %>% 
    filter(city == "Manaus") %>%
    filter(is_last == "True") %>%
+   select(deaths)
+march_deaths <- casos %>% filter(city == "Manaus",
+                                 date == "2020-03-31") %>%
    select(deaths)
 min_date <- casos %>% 
    filter(city == "Manaus") %>%
@@ -45,7 +50,7 @@ p2 <- casos %>% filter(city == "Manaus") %>%
    theme_bw()+
    labs(title = "Acumulado de óbitos por covid19 confirmados",
         subtitle = "Manaus")+
-   geom_hline(yintercept=as.numeric(max_deaths), linetype="dashed", color = "red")+
+   geom_hline(yintercept=c(as.numeric(march_deaths$deaths),as.numeric(max_deaths$deaths)), linetype="dashed", color = "red")+
    scale_y_continuous(breaks = c(pretty(casos$deaths), as.numeric(max_deaths)), 
                       labels = c(pretty(casos$deaths), as.numeric(max_deaths)))
    
